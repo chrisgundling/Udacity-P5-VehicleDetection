@@ -75,17 +75,17 @@ I created a separate section in the notebook entitled “Section 5: Test out Sli
 
 <img src="output_images/SlidingWindows.png" width="1000">
 
-Finally I show an image that uses the sliding windows with the SVM classifier together to determine car/non-car areas of the image.
+Finally I show an image that uses the sliding windows with the SVM classifier together to determine car/non-car areas of the image. The code to create this image is in "Section 6: Test the Classifier on Single Images" of the python notebook.
 
 <img src="output_images/VehicleDetection_ex.png" width="400">
 
 #### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
-Once I had trained a fairly robust classifier and tuned my sliding windows approach, I then used the heat map approach to help with the false positives and create well positioned detection boxes. The functions used to perform these operations are in the section entitled “Heat Map for Final detection”. The heatmap function assigns a +1 for the pixel locations where there has been a positive vehicle detection by the classifier. Typically when a vehicle actually exists (true positive) multiple detections will be made due to overlapping nature and varying scale of the sliding windows. Therefore a thresholding can be applied to filter out the detections where only a single window was classified as a vehicle (usually a false positive). The below images show some examples after the heat map thresholding is performed. Still not perfect, but getting closer! 
+Once I had trained a fairly robust classifier and tuned my sliding windows approach, I then used the heat map approach to help with the false positives and create well positioned detection boxes. The functions used to perform these operations are in the section entitled “Section 7: Heat Map on the Final Bounding Boxes”. The heatmap function assigns a +1 for the pixel locations where there has been a positive vehicle detection by the classifier. Typically when a vehicle actually exists (true positive) multiple detections will be made due to overlapping nature and varying scale of the sliding windows. Therefore a thresholding can be applied to filter out the detections where only a single window was classified as a vehicle (usually a false positive). The below images show an example after the heat map thresholding is performed. Still not perfect, but getting closer! 
 
-IMAGES
+<img src="output_images/HeatMap.png" width="800">
 
-While this worked fairly well, it was clear that when using this pipeline on video, multiple consecutive frames could be used to improve the results. These techniques are described in the following sections.
+While this worked fairly well, it was evident that when using this pipeline on video, multiple consecutive frames could be used to improve the results. These techniques are described in the following sections.
 ---
 
 ### Video Implementation
