@@ -10,7 +10,7 @@ The goals / steps of this project are the following:
 * Run your pipeline on a video stream (start with the test_video.mp4 and later implement on full project_video.mp4) and create a heat map of recurring detections frame by frame to reject outliers and follow detected vehicles.
 * Estimate a bounding box for vehicles detected.
 
-#### The following sections address each of the rubric points for the project and describe my approach for tackling each of them. All images in the writeup are saved in the folder called `ouput_images`.
+#### The following sections address each of the rubric points for the project and describe my approach for tackling each of them. All images in the writeup are saved in the folder called `output_images`.
 
 ---
 ### Writeup / README
@@ -23,11 +23,16 @@ Provided below.
 
 #### 1. Explain how (and identify where in your code) you extracted HOG features from the training images.
 
-The section titled “P5-Functions” in the IPython Notebook (Project5.ipynb) contains each of the functions that I used to process images and train my classifier. After reading in all the available training images (8035 vehicle images and 8020 non-vehicle images), I then perform various operations to extract features from the images. The functions “get_hog_features” and “find_cars” are what I used to extract HOG features from the images. Using the get_hog_features function, I have shown below some images of HOG features from the “vehicles” and “non-vehicles” images that comprise the training set. 
+The section 2 titled “Define Pipeline Functions” in the IPython Notebook (P5-VehicleDetection-Rev1.ipynb) contains each of the functions that I used to process images and train my classifier. After reading in all the available training images (8792 vehicle images and 8968 non-vehicle images), I then perform various operations to extract features from the images. The functions “get_hog_features” and “find_cars” are what I used to extract HOG features from the images. Using the get_hog_features function, I have shown below some images of HOG features from the “vehicles” and “non-vehicles” images that comprise the training set. 
+
+<img src="output_images/Vehicle.png" width="400">
+<img src="output_images/Non-Vehicle.png" width="400">
 
 There are many parameters that can be adjusted for the `skimage.hog()` HOG features tool. After some experimentation, I stuck with the baseline parameters of `orientations=9`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)` as I did not see much improvement in the accuracy of my linear SVM classifier when I varied these parameters. 
 
 My main tuning for the HOG features was the color spaces and the number of channels used. The HOG features for each channel for HSV, YCrCb and LUV color channels can be seen below.
+
+<img src="images/calibrate.png" width="1000">
 
 #### 2. Explain how you settled on your final choice of HOG parameters.
 
@@ -37,6 +42,13 @@ The following table shows the different combinations of color spaces and channel
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
 The “Train SVM Classifier” section of the P5-Vehicle.ipynb notebook is where I trained the linear SVM classifier. After the images are read in, HOG features, spatial features and color histogram features are all extracted from the training and test images. I experimented with not including the spatial and color histogram features, but found that the classifier was less likely to produce false positives with both of these types of features included. The table below shows the classifier accuracy using only HOG features, HOG + spatial features and HOG + spatial + histogram features. These features are then normalized, shuffled and split into training and test sets before they are presented to the SVM.
+
+| Source        | Destination   | 
+|:-------------:|:-------------:| 
+| 580, 460      | 200, 100      | 
+| 200, 720      | 200, 720      |
+| 706, 460      | 1040, 100     |
+| 1140, 720     | 1040, 720     |
 
 The SVM is a large margin classifier, which means that it is attempting to create linear boundaries between the non-car and car features that maximize the margin. The final accuracy of my linear SVM on the test set was 99.4%.
 
@@ -58,6 +70,8 @@ While this worked fairly well, it was clear that when using this pipeline on vid
 ### Video Implementation
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
+
+Here's a [link to my video result](./P4_finalvideo.mp4) and here is the youtube link: https://youtu.be/r0C3hhiks5I
 
 Here's a [link to my video result](./project_video.mp4) for the vehicles detections.
 
