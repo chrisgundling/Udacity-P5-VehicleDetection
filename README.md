@@ -64,16 +64,16 @@ Since the training images are taken from video streams, I also tried splitting o
 
 #### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-I created a separate section in the notebook entitled “Section 5: Test out Sliding Windows” where I could test the size, location and number of sliding windows. After a lot of experimentation I found that I could achieve a successful result with 6 different size window scales. The windows were all focused to the area within the image where vehicles were expected. The smallest windows searched closer to the horizon line and used less overlap than the larget windows. This corresponds to the perspective size of the vehicles in the image. I also used rectangles rather than boxes because of the typical shape of the vehicles. A table of the sliding window sizes is shown below, which demonstrates that 257 sliding windows are used per frame. Images showing each of the window scales is also provided (the images are shown with no overlap to help see the window scale). 
+I created a separate section in the notebook entitled “Section 5: Test out Sliding Windows” where I could test the size, location and number of sliding windows. After a lot of experimentation I found that I could achieve a successful result with 6 different size window scales. The windows were all focused to the area within the image where vehicles were expected. The smallest windows searched closer to the horizon line and used less overlap than the larget windows. This corresponds to the perspective size of the vehicles in the image. I also used rectangles rather than boxes because of the typical shape of the vehicles. A table of the sliding window sizes is shown below, which demonstrates that 199 sliding windows are used per frame. Images showing each of the window scales is also provided (the images are shown with no overlap to help see the window scale). 
 
 | Window Size   | Window Overlap| Window # | 
 |:-------------:|:-------------:|:--------:| 
-| 64, 64        | 0.0           | 28       |
-| 92, 74        | 0.25          | 52       |
-| 120, 84       | 0.5           | 70       |
-| 148, 94       | 0.5           | 44       |
-| 176, 104      | 0.5           | 27       |
-| 204, 114      | 0.75          | 24       |
+| 64, 64        | 0.0           | 24       |
+| 92, 74        | 0.25          | 40       |
+| 120, 84       | 0.5           | 60       |
+| 148, 94       | 0.5           | 36       |
+| 176, 104      | 0.5           | 21       |
+| 204, 114      | 0.75          | 18       |
 
 <img src="output_images/SlidingWindows.png" width="1000">
 
