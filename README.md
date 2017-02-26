@@ -46,15 +46,25 @@ I performed a sensitivity study of the classifier test accuracy to the different
 
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
-Section 5 “Train theSVM Classifier” of the P5-VehicleDetection-Rev1.ipynb notebook is where I trained the linear SVM classifier. After the images are read in, HOG features, spatial features and color histogram features are all extracted from the training and test images. I experimented with not including the spatial and color histogram features, but found that the classifier was less likely to produce false positives with both of these types of features included. The sensitivity study table in the previous section (above) shows the classifier accuracy using only HOG features, HOG + spatial features and HOG + spatial + histogram features. Once the features are extracted, they are then normalized using the `StandardScaler().fit(X)` command. Finally the `train_test_split` command is used to shuffle the data and slit it into training and testing sets before they are presented to the SVM.
+Section 4 “Train theSVM Classifier” of the P5-VehicleDetection-Rev1.ipynb notebook is where I trained the linear SVM classifier. After the images are read in, HOG features, spatial features and color histogram features are all extracted from the training and test images. I experimented with not including the spatial and color histogram features, but found that the classifier was less likely to produce false positives with both of these types of features included. The sensitivity study table in the previous section (above) shows the classifier accuracy using only HOG features, HOG + spatial features and HOG + spatial + histogram features. Once the features are extracted, they are then normalized using the `StandardScaler().fit(X)` command. Finally the `train_test_split` command is used to shuffle the data and slit it into training and testing sets before they are presented to the SVM.
 
-The SVM is a large margin classifier, which means that it is attempting to create linear boundaries between the non-car and car features that maximize the margin. The final accuracy of my linear SVM on the test set was 99.40%.
+The SVM is a large margin classifier, which means that it is attempting to create linear boundaries between the non-car and car features that maximize the margin. The final accuracy of my linear SVM on the test set was 99.41%. Information on the training and testing of the SVM is shown below:
+
+```
+Using: 9 orientations 8 pixels per cell and 2 cells per block
+Feature vector length: 6108
+4.71 Seconds to train SVC...
+Test Accuracy of SVC =  0.9941 # On 3552 images
+0.04 Seconds to Test SVC...    # On 3552 images
+```
 
 ### Sliding Window Search
 
 #### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-I created a separate section in the notebook entitled “Sliding Windows” where I could test the size, location and number of sliding windows. After a lot of experimentation I found that I could achieve a successful result with 5 different size windows. The largest windows searched the bottom of the images, whereas the smaller windows searched closed to the horizon line. This corresponds to the perspective size of the vehicles in the image. I also used rectangles rather than boxes because of the typical shape of the vehicles. A table of the sliding window sizes is shown below and an image with all of these windows is also shown. Finally I show an image that uses the sliding windows with the SVM classifier together to determine car/non-car areas of the image.
+I created a separate section in the notebook entitled “Section 5: Test out Sliding Windows” where I could test the size, location and number of sliding windows. After a lot of experimentation I found that I could achieve a successful result with 6 different size window scales. The windows were all focused to the area within the image where vehicles were expected. The smallest windows searched closer to the horizon line and used less overlap than the larget windows. This corresponds to the perspective size of the vehicles in the image. I also used rectangles rather than boxes because of the typical shape of the vehicles. A table of the sliding window sizes is shown below and images showing each of the window scales is also provided (the images are shown with no overlap to help see the window scale). Finally I show an image that uses the sliding windows with the SVM classifier together to determine car/non-car areas of the image.
+
+<img src="output_images/SlidingWindows.png" width="1000">
 
 #### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
