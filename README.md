@@ -93,29 +93,17 @@ While this worked fairly well, it was evident that when using this pipeline on v
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
 
-Here's a [link to my video result](./P4_finalvideo.mp4) and here is the youtube link: https://youtu.be/r0C3hhiks5I
+Here's a [link to my video result](./P5_Final.mp4) and here is the youtube link: https://youtu.be/r0C3hhiks5I
 
-Here's a [link to my video result](./project_video.mp4) for the vehicles detections.
-
-Here is another link to the combined results of my P4 and P5 approaches.
+Here is another [link to the combined results](./P5_combined.mp4) of my P4 and P5 approaches and here is youtube link:
 
 #### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
 
-The video implementation was a little different as it allowed for the use of multiple consecutive image frames. From each frame I stored the heat map and the detection boxes that were produced using the “draw on image” function. By storing these values, it allowed me to combine the results from multiple frames. For the heat maps, I summed the results from the most recent 10 frames. This allowed me to increase the heatmap threshold. With this integrated heat map technique I saw several positive outcomes.  The first was that the false positives were reduced, the second was that the true positives increased (missing a vehicle in a single frame was okay as long as the next frames picked it up) and finally, the detection boxes became smoother. Once the final heat maps are determined, the `scipy.ndimage.measurements.label()` function was used to identify individual vehicles in the heat map.
+The video implementation was a little different as it allowed for the use of multiple consecutive image frames. From each frame I stored the heat map and the detection boxes that were produced using the “draw on image” function. By storing these values, it allowed me to combine the results from multiple frames. For the heat maps, I summed the results from the most recent 5 frames. This allowed me to increase the heatmap threshold. With this integrated heat map technique I saw several positive outcomes. The first was that the false positives were reduced, the second was that the true positives increased (missing a vehicle in a single frame was okay as long as the next frames picked it up) and finally, the detection boxes became smoother. Once the final heat maps are determined, the `scipy.ndimage.measurements.label()` method was used to identify individual vehicles in the heat map.
 
 The second technique that I used in the video processing was averaging and outlier removal for the detection boxes drawn on the image. I took an average of the box corners from the previous 5 frames and if the current frame did not vary by more than 50% from that average, then it was included in a new average, otherwise it was discarded.
 
 Here's an example result showing the summed heat map from a series of frames of video and the resulting detection boxes. 
-
-### Here are six frames and their corresponding heatmaps:
-
-![alt text][image5]
-
-### Here is the output of `scipy.ndimage.measurements.label()` on the integrated heatmap from all six frames:
-![alt text][image6]
-
-### Here the resulting bounding boxes are drawn onto the last frame in the series:
-![alt text][image7]
 
 ---
 
@@ -130,9 +118,8 @@ The biggest problems that I faced were false positive detections and variability
 3. Integrating the heat maps over several frames so that the vehicles showed up strongly enough that the threshold could be increased.
 4. Averaging of the box corners over several frames made them significantly smoother.
 
-While this approach works fairly well on the project video, it will still fail in many situations. The classifier was only trained on approximately 16000 images, which could be significantly increased to help the model generalize. Changes in lighting and shadows or locations of color saturation will still cause the model to make false positive detections. This could be potentially improved by using augmentations (other colorspaces, brightness adjustments, blurring, jittering) to the training images. 
+While this approach works fairly well on the project video, it will still fail in many situations. The classifier was only trained on approximately 17000 images, which could be significantly increased to help the model generalize. Changes in lighting and shadows or locations of color saturation will still cause the model to make false positive detections. This could be potentially improved by using augmentations (other colorspaces, brightness adjustments, blurring, jittering) to the training images. 
 
 With more time I would be very curious to train a Convolutional Neural Network that uses the raw images rather than HOG features to classify the images. My approach for this project does not perform fast enough for real time and I would be interested to test the speed of other approaches running on a state of the art GPU to see if they could meet the requirements of performing in a real vehicle. 
 
 Now that I have my techniques from P4 and P5 combined together my next step is to take some video from my own car and see if these techniques can work in the real world!
-
