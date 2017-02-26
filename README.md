@@ -58,6 +58,14 @@ Test Accuracy of SVC =  0.9941 # On 3552 images
 0.04 Seconds to Test SVC...    # On 3552 images
 ```
 
+```
+Using: 9 orientations 8 pixels per cell and 2 cells per block
+Feature vector length: 6108
+10.17 Seconds to train SVC...
+Test Accuracy of SVC =  0.8933
+0.26 Seconds to Test SVC...
+```
+
 Since the training images are taken from video streams, I also tried splitting out the last 20% of the images into the validation set, to avoid similarities between training and validation sets. Using this apporach, the accuracy of the classier was slightly worse on the validation set, which demonstrates the overfitting that can occur when just randomly splitting up the data into the train/validation sets.
 
 ### Sliding Window Search
