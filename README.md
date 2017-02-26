@@ -86,6 +86,7 @@ Once I had trained a fairly robust classifier and tuned my sliding windows appro
 <img src="output_images/HeatMap.png" width="800">
 
 While this worked fairly well, it was evident that when using this pipeline on video, multiple consecutive frames could be used to improve the results. These techniques are described in the following sections.
+
 ---
 
 ### Video Implementation
