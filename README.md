@@ -36,7 +36,7 @@ There are many parameters that can be adjusted for the `skimage.hog()` HOG featu
 
 My main tuning for the HOG features was the color spaces and the number of channels used. The HOG features for each channel for HSV, YCrCb and LUV color channels can be seen below.
 
-<img src="images/calibrate.png" width="1000">
+<img src="output_images/HOG-Colorspace.png" width="800">
 
 #### 2. Explain how you settled on your final choice of HOG parameters.
 
