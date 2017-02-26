@@ -46,16 +46,9 @@ I performed a sensitivity study of the classifier test accuracy to the different
 
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
-The “Train SVM Classifier” section of the P5-Vehicle.ipynb notebook is where I trained the linear SVM classifier. After the images are read in, HOG features, spatial features and color histogram features are all extracted from the training and test images. I experimented with not including the spatial and color histogram features, but found that the classifier was less likely to produce false positives with both of these types of features included. The table below shows the classifier accuracy using only HOG features, HOG + spatial features and HOG + spatial + histogram features. These features are then normalized, shuffled and split into training and test sets before they are presented to the SVM.
+Section 5 “Train theSVM Classifier” of the P5-VehicleDetection-Rev1.ipynb notebook is where I trained the linear SVM classifier. After the images are read in, HOG features, spatial features and color histogram features are all extracted from the training and test images. I experimented with not including the spatial and color histogram features, but found that the classifier was less likely to produce false positives with both of these types of features included. The sensitivity study table in the previous section (above) shows the classifier accuracy using only HOG features, HOG + spatial features and HOG + spatial + histogram features. Once the features are extracted, they are then normalized using the `StandardScaler().fit(X)` command. Finally the `train_test_split` command is used to shuffle the data and slit it into training and testing sets before they are presented to the SVM.
 
-| Source        | Destination   | 
-|:-------------:|:-------------:| 
-| 580, 460      | 200, 100      | 
-| 200, 720      | 200, 720      |
-| 706, 460      | 1040, 100     |
-| 1140, 720     | 1040, 720     |
-
-The SVM is a large margin classifier, which means that it is attempting to create linear boundaries between the non-car and car features that maximize the margin. The final accuracy of my linear SVM on the test set was 99.4%.
+The SVM is a large margin classifier, which means that it is attempting to create linear boundaries between the non-car and car features that maximize the margin. The final accuracy of my linear SVM on the test set was 99.40%.
 
 ### Sliding Window Search
 
