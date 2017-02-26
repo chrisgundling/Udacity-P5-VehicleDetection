@@ -25,8 +25,8 @@ Provided below.
 
 The section 2 titled “Define Pipeline Functions” in the IPython Notebook (P5-VehicleDetection-Rev1.ipynb) contains each of the functions that I used to process images and train my classifier. After reading in all the available training images (8792 vehicle images and 8968 non-vehicle images), I then perform various operations to extract features from the images. The functions “get_hog_features” and “find_cars” are what I used to extract HOG features from the images. Using the get_hog_features function, I have shown below some images of HOG features from the “vehicles” and “non-vehicles” images that comprise the training set. 
 
-<img src="output_images/Vehicle.png" width="400">
-<img src="output_images/Non-Vehicle.png" width="400">
+<img src="output_images/Vehicle.png" width="300">
+<img src="output_images/Non-Vehicle.png" width="300">
 
 There are many parameters that can be adjusted for the `skimage.hog()` HOG features tool. After some experimentation, I stuck with the baseline parameters of `orientations=9`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)` as I did not see much improvement in the accuracy of my linear SVM classifier when I varied these parameters. 
 
