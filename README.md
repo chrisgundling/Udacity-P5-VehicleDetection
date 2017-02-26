@@ -46,9 +46,9 @@ I performed a sensitivity study of the classifier test accuracy to the different
 
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
-Section 4 “Train theSVM Classifier” of the P5-VehicleDetection-Rev1.ipynb notebook is where I trained the linear SVM classifier. After the images are read in, HOG features, spatial features and color histogram features are all extracted from the training and test images. I experimented with not including the spatial and color histogram features, but found that the classifier was less likely to produce false positives with both of these types of features included. The sensitivity study table in the previous section (above) shows the classifier accuracy using only HOG features, HOG + spatial features and HOG + spatial + histogram features. Once the features are extracted, they are then normalized using the `StandardScaler().fit(X)` command. Finally the `train_test_split` command is used to shuffle the data and slit it into training and testing sets before they are presented to the SVM.
+Section 4 “Train theSVM Classifier” of the P5-VehicleDetection-Rev1.ipynb notebook is where I trained the linear SVM classifier. After the images are read in, HOG features, spatial features and color histogram features are all extracted from the training and test images. I experimented with not including the spatial and color histogram features, but found that the classifier was less likely to produce false positives with both of these types of features included. The sensitivity study table in the previous section (above) shows the classifier accuracy using only HOG features, HOG + spatial features and HOG + spatial + histogram features. Once the features are extracted, they are then normalized using the `StandardScaler().fit(X)` command. Finally the `train_test_split` command is used to shuffle the data and split it into training and validation sets before they are presented to the SVM.
 
-The SVM is a large margin classifier, which means that it is attempting to create linear boundaries between the non-car and car features that maximize the margin. The final accuracy of my linear SVM on the test set was 99.41%. Information on the training and testing of the SVM is shown below:
+The SVM is a large margin classifier, which means that it is attempting to create linear boundaries between the non-car and car features that maximize the margin. The accuracy of my linear SVM on the validation set was 99.41%. Information on the training and testing of the SVM is shown below:
 
 ```
 Using: 9 orientations 8 pixels per cell and 2 cells per block
@@ -57,6 +57,8 @@ Feature vector length: 6108
 Test Accuracy of SVC =  0.9941 # On 3552 images
 0.04 Seconds to Test SVC...    # On 3552 images
 ```
+
+Since the training images are taken from video streams, I also tried splitting out the last 20% of the images into the validation set, to avoid similarities between training and validation sets. Using this apporach, the accuracy of the classier was slightly worse on the validation set, which demonstrates the overfitting that can occur when just randomly splitting up the data into the train/validation sets.
 
 ### Sliding Window Search
 
@@ -75,7 +77,7 @@ I created a separate section in the notebook entitled “Section 5: Test out Sli
 
 <img src="output_images/SlidingWindows.png" width="1000">
 
-Finally I show an image that uses the sliding windows with the SVM classifier together to determine car/non-car areas of the image. The code to create this image is in "Section 6: Test the Classifier on Single Images" of the python notebook.
+Finally, I show an image that uses the sliding windows with the SVM classifier together to determine car/non-car areas of the image. The code to create this image is in "Section 6: Test the Classifier on Single Images" of the python notebook.
 
 <img src="output_images/VehicleDetection_ex.png" width="400">
 
@@ -99,9 +101,9 @@ Here is another [link to the combined results](./P5_combined.mp4) of my P4 and P
 
 #### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
 
-The video implementation was a little different as it allowed for the use of multiple consecutive image frames. From each frame I stored the heat map and the detection boxes that were produced using the “draw on image” function. By storing these values, it allowed me to combine the results from multiple frames. For the heat maps, I summed the results from the most recent 5 frames. This allowed me to increase the heatmap threshold. With this integrated heat map technique I saw several positive outcomes. The first was that the false positives were reduced, the second was that the true positives increased (missing a vehicle in a single frame was okay as long as the next frames picked it up) and finally, the detection boxes became smoother. Once the final heat maps are determined, the `scipy.ndimage.measurements.label()` method was used to identify individual vehicles in the heat map.
+The video implementation was a little different as it allowed for the use of multiple consecutive image frames. For processing video images I created the `process_image()` function in "Section 8: Process Video Images". From each frame I stored the heat map values, which allowed me to combine the results from multiple frames. I summed the "heat" (areas where classifier has detected vehicles) from the most recent 10 frames. This allowed me to increase the heatmap threshold to 7. With this integrated heat map technique I saw several positive outcomes. The first was that the false positives were reduced, the second was that the true positives increased (missing a vehicle in a single frame was okay as long as the next frames picked it up) and finally, the detection boxes became smoother. Once the final heat maps are determined, the `scipy.ndimage.measurements.label()` method was used to identify individual vehicles in the heat map.
 
-The second technique that I used in the video processing was averaging and outlier removal for the detection boxes drawn on the image. I took an average of the box corners from the previous 5 frames and if the current frame did not vary by more than 50% from that average, then it was included in a new average, otherwise it was discarded.
+The second technique that I used in the video processing was to reject certain vehicle detection boxes. The classifier appeared to predict a significant number of false positives along the yellow lane lines. The best explanation that I could determine for this was that the color saturation of the lines had confused the color histogram features used to train the SVM classifier. The bounding boxes draw for the yellow lines were small an in an area of the image (right in front of our vehicle) where a vehicle would be large. I therefore rejected detections that had an aread less than 
 
 Here's an example result showing the summed heat map from a series of frames of video and the resulting detection boxes. 
 
