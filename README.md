@@ -34,14 +34,15 @@ The functions “get_hog_features” and “find_cars” are what I used to extr
 
 There are many parameters that can be adjusted for the `skimage.hog()` HOG features tool. After some experimentation, I stuck with the baseline parameters of `orientations=9`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)` as I did not see much improvement in the accuracy of my linear SVM classifier when I varied these parameters. 
 
-My main tuning for the HOG features was the color spaces and the number of channels used. The HOG features for each channel for LUV, HSV, and YCrCb colorspaces can be seen below. Different color channels of the various colorspaces show more distinct HOG features. For example, the "L" channel of the LUV colorspace appears to give much more gradient information than the "U" channel.
+My main tuning for the HOG features was the color spaces and the number of channels used. The HOG features for each channel for LUV, HSV, and YCrCb colorspaces can be seen below. Different color channels of the various color spaces show more distinct HOG features. For example, the "L" channel of the LUV colorspace appears to give much more gradient information than the "U" channel.
 
 <img src="output_images/HOG-Colorspace.png" width="500">
 
 #### 2. Explain how you settled on your final choice of HOG parameters.
 
-The following table shows the different combinations of color spaces and channels that I tried and how the test accuracy of the classifier varied with each. I found that the LUV color space worked the best in producing and accurate and reliable solution. I also used all three channels from the LUV color space because less false positives were produced when testing on video. Even though the change in accuracy from 1 to “ALL” channels was fairly small, I actually found that it made a significant difference when testing on the video stream. Unfortunately, using all three channels does slow the solution down. 
+I performed a sensitivity study of the classifier test accuracy to the different combinations of color spaces and channels. The various combinations that I tried are shown in the table below with the best cases highlighted in blue. While the LUV and YCrCb performed similarly in producing accurate test accuracies, after testing on video streams I found that the LUV color space worked the best in producing both an accurate and reliable solution. I also used all three channels from the LUV color space because less false positives were produced when testing on video. Even though the change in accuracy from 1 to “ALL” channels was fairly small, I actually found that it made a significant difference when testing on the video stream. Unfortunately, using all three channels does slow the solution down. 
 
+<img src="output_images/Sensitivity.png" width="1000">
 
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
