@@ -77,6 +77,8 @@ I created a separate section in the notebook entitled “Section 5: Test out Sli
 
 Finally I show an image that uses the sliding windows with the SVM classifier together to determine car/non-car areas of the image.
 
+<img src="output_images/VehicleDetection_ex.png" width="400">
+
 #### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
 Once I had trained a fairly robust classifier and tuned my sliding windows approach, I then used the heat map approach to help with the false positives and create well positioned detection boxes. The functions used to perform these operations are in the section entitled “Heat Map for Final detection”. The heatmap function assigns a +1 for the pixel locations where there has been a positive vehicle detection by the classifier. Typically when a vehicle actually exists (true positive) multiple detections will be made due to overlapping nature and varying scale of the sliding windows. Therefore a thresholding can be applied to filter out the detections where only a single window was classified as a vehicle (usually a false positive). The below images show some examples after the heat map thresholding is performed. Still not perfect, but getting closer! 
