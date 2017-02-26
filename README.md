@@ -23,12 +23,12 @@ Provided below.
 
 #### 1. Explain how (and identify where in your code) you extracted HOG features from the training images.
 
-Section 2 titled “Define Pipeline Functions” in the IPython Notebook (P5-VehicleDetection-Rev1.ipynb) contains each of the functions that I used to process images and train my classifier. After reading in all the available training images (8792 vehicle images and 8968 non-vehicle images), I then perform various operations to extract features from the images. Examples of the vehicle and non-vehicle images that were used to train the classifier are shown below: 
+Section 2 titled “Define Pipeline Functions” in the IPython Notebook (P5-VehicleDetection-Rev1.ipynb) contains each of the functions used to process images and train my classifier. After reading in all the available training images (8792 vehicle images and 8968 non-vehicle images), I then perform various operations to extract features from the images. Examples of the vehicle and non-vehicle images that were used to train the classifier are shown below: 
 
 <img src="output_images/Vehicle.png" width="300">
 <img src="output_images/Non-Vehicle.png" width="300">
 
-The functions “get_hog_features” and “find_cars” are what I used to extract HOG features from the images. Using the get_hog_features function, I have shown below images of HOG features for the “vehicles” and “non-vehicles” images using each of the 3 RGB channels. 
+The functions `get_hog_features()` and `find_cars()` are what I used to extract HOG features from the images. Using the `get_hog_features()` function, I have shown below images of HOG features for the “vehicles” and “non-vehicles” images using each of the 3 RGB channels. 
 
 <img src="output_images/HOG-Examples.png" width="500">
 
