@@ -62,18 +62,20 @@ Test Accuracy of SVC =  0.9941 # On 3552 images
 
 #### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-I created a separate section in the notebook entitled “Section 5: Test out Sliding Windows” where I could test the size, location and number of sliding windows. After a lot of experimentation I found that I could achieve a successful result with 6 different size window scales. The windows were all focused to the area within the image where vehicles were expected. The smallest windows searched closer to the horizon line and used less overlap than the larget windows. This corresponds to the perspective size of the vehicles in the image. I also used rectangles rather than boxes because of the typical shape of the vehicles. A table of the sliding window sizes is shown below and images showing each of the window scales is also provided (the images are shown with no overlap to help see the window scale). Finally I show an image that uses the sliding windows with the SVM classifier together to determine car/non-car areas of the image.
+I created a separate section in the notebook entitled “Section 5: Test out Sliding Windows” where I could test the size, location and number of sliding windows. After a lot of experimentation I found that I could achieve a successful result with 6 different size window scales. The windows were all focused to the area within the image where vehicles were expected. The smallest windows searched closer to the horizon line and used less overlap than the larget windows. This corresponds to the perspective size of the vehicles in the image. I also used rectangles rather than boxes because of the typical shape of the vehicles. A table of the sliding window sizes is shown below, which demonstrates that 257 sliding windows are used per frame. Images showing each of the window scales is also provided (the images are shown with no overlap to help see the window scale). 
 
 | Window Size   | Window Overlap| Window # | 
 |:-------------:|:-------------:|:--------:| 
 | 64, 64        | 0.0           | 28       |
-| 92, 74        | 0.5           | 60       |
-| 120, 84       | 0.5           | 42       |
-| 148, 94       | 0.5           | 24       |
-| 176, 104      | 0.75          | 30       |
+| 92, 74        | 0.25          | 52       |
+| 120, 84       | 0.5           | 70       |
+| 148, 94       | 0.5           | 44       |
+| 176, 104      | 0.5           | 27       |
 | 204, 114      | 0.75          | 24       |
 
 <img src="output_images/SlidingWindows.png" width="1000">
+
+Finally I show an image that uses the sliding windows with the SVM classifier together to determine car/non-car areas of the image.
 
 #### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
