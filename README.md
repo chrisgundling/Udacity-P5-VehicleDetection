@@ -60,7 +60,7 @@ Test Accuracy of SVC =  0.9941 # On 3552 images
 0.04 Seconds to Test SVC...    # On 3552 images
 ```
 
-Even with the classifer accuracy so high, I was still having a lot of problems with false postive predictions. Since the training images are taken from video streams, I then tried splitting out the last 20% of the images (both from car and non-car) into the validation set, to avoid similarities between training and validation sets. Using this apporach, the accuracy of the classier was close to 10% worse on the validation set, which demonstrates the overfitting that can occur when just randomly splitting up the data into the train/validation sets. After re-tuning my parameters, I was able to achieve a final accuracy of 95.5% as shown below:
+Even with the classifer accuracy so high, I was still having a lot of problems with false postive predictions. Since the training images are taken from video streams, I then tried splitting out the last 20% of the images (both from car and non-car examples) into the validation set, to avoid similarities between training and validation sets. Using this apporach, the accuracy of the classifier was almost 10% worse in accuracy on the validation set. This demonstrates the overfitting that can occur when just randomly splitting up the data into the train/validation sets. After re-tuning my parameters, I was able to achieve a final validation accuracy of 95.5% as shown below:
 
 ```
 Using: 9 orientations 8 pixels per cell and 2 cells per block
