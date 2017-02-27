@@ -97,6 +97,8 @@ Once I had trained a fairly robust classifier and tuned my sliding windows appro
 
 <img src="output_images/HeatMap.png" width="800">
 
+<img src="output_images/HeatMap2.png" width="800">
+
 While this worked fairly well, it was evident that when using this pipeline on video, multiple consecutive frames could be used to improve the results. These techniques are described in the following sections.
 
 ---
@@ -105,15 +107,13 @@ While this worked fairly well, it was evident that when using this pipeline on v
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
 
-Here's a [link to my video result](./P5_final.mp4) and here is the youtube link: https://youtu.be/r0C3hhiks5I
+Here's a [link to my video result](./output_images/P5_final.mp4).
 
-Here is another [link to the combined results](./P5_combined.mp4) of my P4 and P5 approaches and here is youtube link:
+Here is another [link to the combined results](./output_images/P5_combined_vid.mp4) of my P4 and P5 approaches.
 
 #### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
 
-The video implementation was different as it allowed for the use of multiple consecutive image frames. For processing video images I created the `process_image()` function in "Section 8: Process Video Images". From each frame I stored the heat map values, which allowed for combining the results from multiple frames. I summed the "heat" (areas where classifier has detected vehicles) from the most recent 10 frames. This allowed me to increase the heatmap threshold to 15. With this integrated heat map technique I saw several positive outcomes. The first was that the false positives were reduced, the second was that the true positives increased (missing a vehicle in a single frame was okay as long as the next frames picked it up) and finally, the detection boxes became smoother. Once the final heat maps are determined, the `scipy.ndimage.measurements.label()` method was used to identify individual vehicles in the heat map.
-
-Here's an example result showing the summed heat map from a series of frames of video and the resulting detection boxes. 
+The video implementation was different as it allowed for the use of multiple consecutive image frames. For processing video images I created the `process_image()` function in "Section 8: Process Video Images". From each frame I stored the heat map values, which allowed for combining the results from multiple frames. I summed the "heat" (areas where classifier has detected vehicles) from the most recent 10 frames. This allowed me to increase the heatmap threshold to 15. With this integrated heat map technique I saw several positive outcomes. The first was that the false positives were reduced, the second was that the true positives increased (missing a vehicle in a single frame was okay as long as the next frames picked it up) and finally, the detection boxes became smoother. Once the final heat maps are determined, the `scipy.ndimage.measurements.label()` method was used to identify individual vehicles in the heat map. 
 
 ---
 
