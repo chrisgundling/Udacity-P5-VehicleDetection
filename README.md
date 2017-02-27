@@ -66,8 +66,8 @@ Even with the classifer accuracy so high, I was still having a lot of problems w
 Using: 9 orientations 8 pixels per cell and 2 cells per block
 Feature vector length: 6108
 20.71 Seconds to train SVC...
-Test Accuracy of SVC =  0.955
-0.23 Seconds to Test SVC...
+Test Accuracy of SVC =  0.955 # On 3552 images
+0.23 Seconds to Test SVC...   # On 3552 images
 ```
 
 ### Sliding Window Search
@@ -105,13 +105,13 @@ While this worked fairly well, it was evident that when using this pipeline on v
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
 
-Here's a [link to my video result](./P5_Final.mp4) and here is the youtube link: https://youtu.be/r0C3hhiks5I
+Here's a [link to my video result](./P5_final.mp4) and here is the youtube link: https://youtu.be/r0C3hhiks5I
 
 Here is another [link to the combined results](./P5_combined.mp4) of my P4 and P5 approaches and here is youtube link:
 
 #### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
 
-The video implementation was a little different as it allowed for the use of multiple consecutive image frames. For processing video images I created the `process_image()` function in "Section 8: Process Video Images". From each frame I stored the heat map values, which allowed me to combine the results from multiple frames. I summed the "heat" (areas where classifier has detected vehicles) from the most recent 10 frames. This allowed me to increase the heatmap threshold to 7. With this integrated heat map technique I saw several positive outcomes. The first was that the false positives were reduced, the second was that the true positives increased (missing a vehicle in a single frame was okay as long as the next frames picked it up) and finally, the detection boxes became smoother. Once the final heat maps are determined, the `scipy.ndimage.measurements.label()` method was used to identify individual vehicles in the heat map.
+The video implementation was different as it allowed for the use of multiple consecutive image frames. For processing video images I created the `process_image()` function in "Section 8: Process Video Images". From each frame I stored the heat map values, which allowed for combining the results from multiple frames. I summed the "heat" (areas where classifier has detected vehicles) from the most recent 10 frames. This allowed me to increase the heatmap threshold to 15. With this integrated heat map technique I saw several positive outcomes. The first was that the false positives were reduced, the second was that the true positives increased (missing a vehicle in a single frame was okay as long as the next frames picked it up) and finally, the detection boxes became smoother. Once the final heat maps are determined, the `scipy.ndimage.measurements.label()` method was used to identify individual vehicles in the heat map.
 
 Here's an example result showing the summed heat map from a series of frames of video and the resulting detection boxes. 
 
@@ -123,13 +123,12 @@ Here's an example result showing the summed heat map from a series of frames of 
 
 The biggest problems that I faced were false positive detections and variability of the vehicle detection boxes from frame to frame. These issues were improved using the following techniques:
 
-1. Using channels multiple color spaces (HSV,HLS,RGB,LUV) improved the classifier accuracy to 95.5% on the validation set images.
+1. Using channels from multiple color spaces (HSV,HLS,RGB,LUV) improved the classifier accuracy to 95.5% on the validation set images.
 2. Tuning of the number, size and locations of the sliding windows had a significant impact on the results.
 3. Integrating the heat maps over several frames so that the vehicles showed up strongly enough that the threshold could be increased.
-4. Rejecting detection boxes that did not make sense, specifically around the yellow lane lines.
 
 While this approach works fairly well on the project video, it will still fail in many situations. The classifier was only trained on approximately 15000 images, which could be significantly increased to help the model generalize. Changes in lighting and shadows or locations of color saturation will still cause the model to make false positive detections. This could be potentially improved by using augmentations (other colorspaces, brightness adjustments, blurring, jittering) to the training images. 
 
-With more time I would be very curious to train a Convolutional Neural Network that uses the raw images rather than HOG features to classify the images. I have recently read about the You Only Look Once (YOLO) approach and how much faster it can be at processing images. My approach for this project (SVM+HOG) does not perform fast enough for real time (1-2 FPS at best on i5 CPU), wheras the YOLO apporach has been shown to work at 50-60 FPS on a state of the art GPU.
+With more time I would like to implement a Convolutional Neural Network (CNN) that uses the raw images rather than HOG features to classify the images. I have recently read about the You Only Look Once (YOLO) approach and how much faster it can be at processing images. My approach for this project (SVM+HOG) does not perform fast enough for real time (1-2 FPS at best on i5 CPU), wheras the YOLO apporach has been shown to work at 50-60 FPS on a state of the art GPU.
 
 Now that I have my techniques from P4 and P5 combined together my next step is to take some video from my own car and see if these techniques can work in the real world!
