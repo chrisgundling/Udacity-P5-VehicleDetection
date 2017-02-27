@@ -40,7 +40,7 @@ My main tuning for the HOG features was the color spaces and the number of chann
 
 #### 2. Explain how you settled on your final choice of HOG parameters.
 
-I performed a sensitivity study of the classifier test accuracy to the different combinations of color spaces and channels. The various combinations that I tried are shown in the table below with the best cases highlighted in blue. While the LUV and YCrCb performed similarly in producing accurate test accuracies, after testing on video streams I found that the LUV color space worked the best in producing both an accurate and reliable solution. I also used all three channels from the LUV color space because less false positives were produced when testing on video. Even though the change in accuracy from 1 to “ALL” channels was fairly small, I actually found that it made a significant difference when testing on the video stream. Unfortunately, using all three channels does slow the solution down. 
+I performed a sensitivity study of the classifier validation set accuracy to the different combinations of color spaces and channels. The various combinations that I tried are shown in the table below with the best cases highlighted in green. While the LUV, HLS, HSV and YCrCb performed similarly in producing accurate validation accuracies, after testing on video streams I found that using a combination of color spaces worked the best in producing both an accurate and reliable solution. I used 3 channels, which were the LUV "L" channel, the RGB 'G' channel and the HSV 'V' channel. I found these 3 channels to produce the best features in their respective color spaces and combining them produced less false positives when testing on video. One thing that I noticed while running these senstivity cases was that even though the change in accuracy from using 1 to 3 channels was fairly small, it made a significant difference when testing on the video stream. Unfortunately, using three channels does slow the solution down. 
 
 <img src="output_images/Sensitivity.png" width="1000">
 
@@ -48,7 +48,7 @@ I performed a sensitivity study of the classifier test accuracy to the different
 
 Section 4 “Train theSVM Classifier” of the P5-VehicleDetection-Rev1.ipynb notebook is where I trained the linear SVM classifier. After the images are read in, HOG features, spatial features and color histogram features are all extracted from the training and test images. I experimented with not including the spatial and color histogram features, but found that the classifier was less likely to produce false positives with both of these types of features included. The sensitivity study table in the previous section (above) shows the classifier accuracy using only HOG features, HOG + spatial features and HOG + spatial + histogram features. Once the features are extracted, they are then normalized using the `StandardScaler().fit(X)` command. Finally the `train_test_split` command is used to shuffle the data and split it into training and validation sets before they are presented to the SVM.
 
-The SVM is a large margin classifier, which means that it is attempting to create linear boundaries between the non-car and car features that maximize the margin. The accuracy of my linear SVM on the validation set was 99.41%. Information on the training and testing of the SVM is shown below:
+The SVM is a large margin classifier, which means that it is attempting to create linear boundaries between the non-car and car features that maximize the margin. Using this approach the accuracy of my linear SVM on the validation set was 99.41%. Information on the training and testing of the SVM is shown below:
 
 ```
 Using: 9 orientations 8 pixels per cell and 2 cells per block
@@ -58,15 +58,15 @@ Test Accuracy of SVC =  0.9941 # On 3552 images
 0.04 Seconds to Test SVC...    # On 3552 images
 ```
 
+Even with the classifer accuracy so high, I was still having a lot of problems with false postive predictions. Since the training images are taken from video streams, I then tried splitting out the last 20% of the images (both from car and non-car) into the validation set, to avoid similarities between training and validation sets. Using this apporach, the accuracy of the classier close to 10% worse on the validation set, which demonstrates the overfitting that can occur when just randomly splitting up the data into the train/validation sets. After re-tuning my parameters, I was able to achieve a final accuracy of 95.5% as shown below:
+
 ```
 Using: 9 orientations 8 pixels per cell and 2 cells per block
 Feature vector length: 6108
-10.17 Seconds to train SVC...
-Test Accuracy of SVC =  0.8933
-0.26 Seconds to Test SVC...
+20.71 Seconds to train SVC...
+Test Accuracy of SVC =  0.955
+0.23 Seconds to Test SVC...
 ```
-
-Since the training images are taken from video streams, I also tried splitting out the last 20% of the images into the validation set, to avoid similarities between training and validation sets. Using this apporach, the accuracy of the classier was slightly worse on the validation set, which demonstrates the overfitting that can occur when just randomly splitting up the data into the train/validation sets.
 
 ### Sliding Window Search
 
