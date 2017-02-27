@@ -58,7 +58,7 @@ Test Accuracy of SVC =  0.9941 # On 3552 images
 0.04 Seconds to Test SVC...    # On 3552 images
 ```
 
-Even with the classifer accuracy so high, I was still having a lot of problems with false postive predictions. Since the training images are taken from video streams, I then tried splitting out the last 20% of the images (both from car and non-car) into the validation set, to avoid similarities between training and validation sets. Using this apporach, the accuracy of the classier close to 10% worse on the validation set, which demonstrates the overfitting that can occur when just randomly splitting up the data into the train/validation sets. After re-tuning my parameters, I was able to achieve a final accuracy of 95.5% as shown below:
+Even with the classifer accuracy so high, I was still having a lot of problems with false postive predictions. Since the training images are taken from video streams, I then tried splitting out the last 20% of the images (both from car and non-car) into the validation set, to avoid similarities between training and validation sets. Using this apporach, the accuracy of the classier was close to 10% worse on the validation set, which demonstrates the overfitting that can occur when just randomly splitting up the data into the train/validation sets. After re-tuning my parameters, I was able to achieve a final accuracy of 95.5% as shown below:
 
 ```
 Using: 9 orientations 8 pixels per cell and 2 cells per block
@@ -72,7 +72,7 @@ Test Accuracy of SVC =  0.955
 
 #### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-I created a separate section in the notebook entitled “Section 5: Test out Sliding Windows” where I could test the size, location and number of sliding windows. After a lot of experimentation I found that I could achieve a successful result with 6 different size window scales. The windows were all focused to the area within the image where vehicles were expected. The smallest windows searched closer to the horizon line and used less overlap than the larget windows. This corresponds to the perspective size of the vehicles in the image. I also used rectangles rather than boxes because of the typical shape of the vehicles. A table of the sliding window sizes is shown below, which demonstrates that 199 sliding windows are used per frame. Images showing each of the window scales is also provided (the images are shown with no overlap to help see the window scale). 
+I created a separate section in the notebook entitled “Section 5: Test out Sliding Windows” where I could test the size, location and number of sliding windows. After a lot of experimentation I found that I could achieve a successful result with 6 different size window scales. The windows were all focused to the area within the image where vehicles were expected. The smallest windows searched closer to the horizon line and used less overlap than the larger windows. This corresponds to the perspective size of the vehicles in the image. I also used rectangles rather than boxes because of the typical shape of the vehicles. A table of the sliding window sizes is shown below, which demonstrates that 199 sliding windows are used per frame. Images showing each of the window scales is also provided (the images are shown with no overlap to help see the window scale). 
 
 | Window Size   | Window Overlap| Window # | 
 |:-------------:|:-------------:|:--------:| 
@@ -111,8 +111,6 @@ Here is another [link to the combined results](./P5_combined.mp4) of my P4 and P
 
 The video implementation was a little different as it allowed for the use of multiple consecutive image frames. For processing video images I created the `process_image()` function in "Section 8: Process Video Images". From each frame I stored the heat map values, which allowed me to combine the results from multiple frames. I summed the "heat" (areas where classifier has detected vehicles) from the most recent 10 frames. This allowed me to increase the heatmap threshold to 7. With this integrated heat map technique I saw several positive outcomes. The first was that the false positives were reduced, the second was that the true positives increased (missing a vehicle in a single frame was okay as long as the next frames picked it up) and finally, the detection boxes became smoother. Once the final heat maps are determined, the `scipy.ndimage.measurements.label()` method was used to identify individual vehicles in the heat map.
 
-The second technique that I used in the video processing was to reject certain vehicle detection boxes. The classifier appeared to predict a significant number of false positives along the yellow lane lines. The best explanation that I could determine for this was that the color saturation of the lines had confused the color histogram features used to train the SVM classifier. The bounding boxes draw for the yellow lines were small an in an area of the image (right in front of our vehicle) where a vehicle would be large. I therefore rejected detections that had an area of less than 75 X 75 pixels (5625 pixels^2) in the left half of the image below the horizon.
-
 Here's an example result showing the summed heat map from a series of frames of video and the resulting detection boxes. 
 
 ---
@@ -123,7 +121,7 @@ Here's an example result showing the summed heat map from a series of frames of 
 
 The biggest problems that I faced were false positive detections and variability of the vehicle detection boxes from frame to frame. These issues were improved using the following techniques:
 
-1. Changing the colorspace to LUV which improved the classifier accuracy to 99.4% on the validation set images.
+1. Using channels multiple color spaces (HSV,HLS,RGB,LUV) improved the classifier accuracy to 95.5% on the validation set images.
 2. Tuning of the number, size and locations of the sliding windows had a significant impact on the results.
 3. Integrating the heat maps over several frames so that the vehicles showed up strongly enough that the threshold could be increased.
 4. Rejecting detection boxes that did not make sense, specifically around the yellow lane lines.
