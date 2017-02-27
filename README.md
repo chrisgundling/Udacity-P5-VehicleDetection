@@ -42,7 +42,7 @@ My main tuning for the HOG features was the color spaces and the number of chann
 
 I performed a sensitivity study of the classifier validation set accuracy to the different combinations of color spaces and channels. The various combinations that I tried are shown in the table below with the best cases highlighted in green. While the LUV, HLS, HSV and YCrCb performed similarly in producing accurate validation accuracies, after testing on video streams I found that using a combination of color spaces worked the best in producing both an accurate and reliable solution. I used 3 channels, which were the LUV "L" channel, the RGB 'G' channel and the HSV 'V' channel. I found these 3 channels to produce the best features in their respective color spaces and combining them produced less false positives when testing on video. One thing that I noticed while running these senstivity cases was that even though the change in accuracy from using 1 to 3 channels was fairly small, it made a significant difference when testing on the video stream. Unfortunately, using three channels does slow the solution down. 
 
-<img src="output_images/Sensitivity.png" width="1000">
+<img src="output_images/Sensitivity2.png" width="1000">
 
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
